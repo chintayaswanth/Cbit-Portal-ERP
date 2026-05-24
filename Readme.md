@@ -3,13 +3,23 @@
 CBIT has multiple websites where important information is scattered.
 This project aims to provide a **unified platform** allowing fellow mates and juniors to access all essential information in one place.
 
-The platform performs **data analysis on attendance data** to help students manage their attendance effectively and plan the minimum attendance percentage required to attend the semester.
+The platform analyzes attendance data to provide students with attendance management tools and semester attendance requirement calculations and attendance schedule analysis plus various other beneficial features designed for students.
 
-It also helps students:
+## Key Features
 
-* Track **subject-wise attendance**
-* Plan attendance to achieve **desired subject-wise marks**
-* Get insights into **how many classes they can skip while maintaining the required attendance percentage**
+- [x] Subject-wise attendance tracking  
+- [x] Attendance analysis and prediction  
+- [x] Calculate how many classes can be skipped while maintaining required attendance  
+- [x] Attendance planning based on desired internal marks  
+- [x] Centralized academic and college information platform  
+- [x] Placement updates   
+- [x] Access to previous year question papers  
+- [x] Holiday list and academic calendar management  
+- [x] Semester-wise and subject-wise syllabus access  
+- [x] Student club listings and information  
+- [x] Easy-to-use student dashboard  
+- [x] Single platform for all important CBIT resources  
+- [x] Designed to simplify and improve student life at CBIT  
 
 ---
 
