@@ -2,6 +2,17 @@ import { useState, useEffect } from "react";
 import Papa from "papaparse";
 import "../css/holidays.css";
 
+function SkeletonRow({ index }) {
+  return (
+    <tr className="skeleton-row">
+      <td><div className="skeleton skeleton-num" /></td>
+      <td><div className="skeleton skeleton-title" style={{ width: `${50 + (index % 5) * 10}%` }} /></td>
+      <td><div className="skeleton skeleton-date" /></td>
+      <td><div className="skeleton skeleton-day" /></td>
+    </tr>
+  );
+}
+
 function Holidays() {
   const [holidays, setHolidays] = useState([]);
   const [filter, setFilter] = useState("upcoming");
@@ -13,11 +24,7 @@ function Holidays() {
     fetch("/data/holiday.csv")
       .then((res) => res.text())
       .then((text) => {
-        const result = Papa.parse(text, {
-          header: true,
-          skipEmptyLines: true,
-        });
-
+        const result = Papa.parse(text, { header: true, skipEmptyLines: true });
         setHolidays(result.data);
         setLoading(false);
       })
@@ -29,68 +36,32 @@ function Holidays() {
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
-    return `${day}-${month}-${year}`;
+    return `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()}`;
   };
 
-  const upcoming = holidays
-    .filter((h) => new Date(h.date) >= today)
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  const upcoming = holidays.filter((h) => new Date(h.date) >= today).sort((a, b) => new Date(a.date) - new Date(b.date));
+  const completed = holidays.filter((h) => new Date(h.date) < today).sort((a, b) => new Date(b.date) - new Date(a.date));
+  const weekend = holidays.filter((h) => h.type === "weekend").sort((a, b) => new Date(a.date) - new Date(b.date));
 
-  const completed = holidays
-    .filter((h) => new Date(h.date) < today)
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  const weekend = holidays
-    .filter((h) => h.type === "weekend")
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  let displayData = [];
-
-  if (filter === "upcoming") displayData = upcoming;
-  if (filter === "completed") displayData = completed;
-  if (filter === "weekend") displayData = weekend;
-
-  if (loading) {
-    return (
-      <div className="holiday-page">
-        <h2 className="holiday-heading">CBIT Holidays 2026</h2>
-
-        <div className="loading-container">
-          <div className="loader"></div>
-          <p>Loading holidays...</p>
-        </div>
-      </div>
-    );
-  }
+  const displayData =
+    filter === "upcoming" ? upcoming :
+      filter === "completed" ? completed : weekend;
 
   return (
     <div className="holiday-page">
       <h2 className="holiday-heading">CBIT Holidays 2026</h2>
 
       <div className="holiday-buttons">
-        <button
-          className={filter === "upcoming" ? "active" : ""}
-          onClick={() => setFilter("upcoming")}
-        >
-          Upcoming
-        </button>
-
-        <button
-          className={filter === "completed" ? "active" : ""}
-          onClick={() => setFilter("completed")}
-        >
-          Completed
-        </button>
-
-        <button
-          className={filter === "weekend" ? "active" : ""}
-          onClick={() => setFilter("weekend")}
-        >
-          Weekend
-        </button>
+        {["upcoming", "completed", "weekend"].map((f) => (
+          <button
+            key={f}
+            className={filter === f ? "active" : ""}
+            onClick={() => setFilter(f)}
+            disabled={loading}
+          >
+            {f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
       </div>
 
       <table className="holiday-table">
@@ -104,14 +75,16 @@ function Holidays() {
         </thead>
 
         <tbody key={filter}>
-          {displayData.map((h, index) => (
-            <tr key={index}>
-              <td>{index + 1}</td>
-              <td>{h.name}</td>
-              <td>{formatDate(h.date)}</td>
-              <td>{h.day}</td>
-            </tr>
-          ))}
+          {loading
+            ? Array.from({ length: 8 }).map((_, i) => <SkeletonRow key={i} index={i} />)
+            : displayData.map((h, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{h.name}</td>
+                <td>{formatDate(h.date)}</td>
+                <td>{h.day}</td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>
