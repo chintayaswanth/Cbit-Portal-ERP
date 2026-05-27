@@ -1,96 +1,122 @@
 import { useEffect, useState } from "react";
 import "../css/placements.css";
 
+// Skeleton row component
+function SkeletonRow({ index }) {
+  return (
+    <tr className="skeleton-row">
+      <td>
+        <div className="skeleton skeleton-num" />
+      </td>
+      <td>
+        <div
+          className="skeleton skeleton-title"
+          style={{ width: `${60 + (index % 4) * 10}%` }}
+        />
+      </td>
+      <td>
+        <div className="skeleton skeleton-link" />
+      </td>
+    </tr>
+  );
+}
+
 function Placements() {
   const [placements, setPlacements] = useState([]);
   const [loading, setLoading] = useState(true);
-
   const [currentPage, setCurrentPage] = useState(1);
-  const rowsPerPage = 10;
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
 
+  const rowsPerPage = 10;
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch(`${API_URL}/placements`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPlacements(data);
+    const fetchPlacements = async () => {
+      try {
+        const res = await fetch(
+          `${API_URL}/placements?page=${currentPage}&limit=${rowsPerPage}`
+        );
+
+        const json = await res.json();
+
+        setPlacements(json.data);
+        setTotalPages(json.pagination.totalPages);
+        setTotalItems(json.pagination.totalItems);
+      } catch (err) {
+        console.error(err);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }, []);
+      }
+    };
 
-  const indexOfLast = currentPage * rowsPerPage;
-  const indexOfFirst = indexOfLast - rowsPerPage;
-
-  const currentPlacements = placements.slice(indexOfFirst, indexOfLast);
-
-  const totalPages = Math.ceil(placements.length / rowsPerPage);
+    fetchPlacements();
+  }, [currentPage, API_URL]);
+  const indexOfFirst = (currentPage - 1) * rowsPerPage;
 
   return (
     <div className="placements-container">
       <h2 className="placements-heading">CBIT Placement Circulars</h2>
 
-      {loading ? (
-        <p className="placements-loading">Loading placements...</p>
-      ) : (
-        <>
-          <table className="placements-table">
-            <thead>
-              <tr>
-                <th>No</th>
-                <th>Circular</th>
-                <th>PDF</th>
+      <table className="placements-table">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Circular</th>
+            <th>PDF</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {loading
+            ? Array.from({ length: rowsPerPage }).map((_, i) => (
+              <SkeletonRow key={i} index={i} />
+            ))
+            : placements.map((item, index) => (
+              <tr key={index}>
+                <td>{indexOfFirst + index + 1}</td>
+
+                <td>{item.title}</td>
+
+                <td>
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="placements-link"
+                  >
+                    Open
+                  </a>
+                </td>
               </tr>
-            </thead>
+            ))}
+        </tbody>
+      </table>
 
-            <tbody>
-              {currentPlacements.map((item, index) => (
-                <tr key={index}>
-                  <td>{indexOfFirst + index + 1}</td>
+      <div className="pagination">
+        <button
+          disabled={currentPage === 1 || loading}
+          onClick={() => setCurrentPage((p) => p - 1)}
+        >
+          Prev
+        </button>
 
-                  <td>{item.title}</td>
+        <span>
+          Page {currentPage} / {totalPages}
+        </span>
 
-                  <td>
-                    <a
-                      href={item.link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="placements-link"
-                    >
-                      Open
-                    </a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <button
+          disabled={currentPage === totalPages || loading}
+          onClick={() => setCurrentPage((p) => p + 1)}
+        >
+          Next
+        </button>
+      </div>
 
-          {/* PAGINATION */}
-
-          <div className="pagination">
-            <button
-              disabled={currentPage === 1}
-              onClick={() => setCurrentPage(currentPage - 1)}
-            >
-              Prev
-            </button>
-
-            <span>
-              Page {currentPage} / {totalPages}
-            </span>
-
-            <button
-              disabled={currentPage === totalPages}
-              onClick={() => setCurrentPage(currentPage + 1)}
-            >
-              Next
-            </button>
-          </div>
-        </>
+      {!loading && (
+        <p className="total-items">
+          Total Circulars: {totalItems}
+        </p>
       )}
     </div>
   );
