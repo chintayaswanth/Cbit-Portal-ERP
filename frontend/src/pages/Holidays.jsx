@@ -5,6 +5,7 @@ import "../css/holidays.css";
 function Holidays() {
   const [holidays, setHolidays] = useState([]);
   const [filter, setFilter] = useState("upcoming");
+  const [loading, setLoading] = useState(true);
 
   const today = new Date();
 
@@ -16,7 +17,13 @@ function Holidays() {
           header: true,
           skipEmptyLines: true,
         });
+
         setHolidays(result.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error loading holidays:", err);
+        setLoading(false);
       });
   }, []);
 
@@ -45,6 +52,19 @@ function Holidays() {
   if (filter === "upcoming") displayData = upcoming;
   if (filter === "completed") displayData = completed;
   if (filter === "weekend") displayData = weekend;
+
+  if (loading) {
+    return (
+      <div className="holiday-page">
+        <h2 className="holiday-heading">CBIT Holidays 2026</h2>
+
+        <div className="loading-container">
+          <div className="loader"></div>
+          <p>Loading holidays...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="holiday-page">
