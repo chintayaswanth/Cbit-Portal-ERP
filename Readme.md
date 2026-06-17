@@ -66,6 +66,62 @@ cd backend
 node server.js
 ```
 
+# Method 2 - Using Docker
+
+## Requirements
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/1YaswantH1/Erp-CBIT.git
+cd erp-cbit
+```
+
+### 2. Create the environment file
+
+Create `backend/.env`:
+
+```env
+PORT=5000
+```
+
+### 3. Build and start
+
+```bash
+docker compose up --build
+```
+
+> First build takes a few minutes — downloads dependencies and Chromium inside the container.
+
+Once ready, open **http://localhost:5173** in your browser.
+
+---
+
+## Commands
+
+| Action | Command |
+|---|---|
+| Start | `docker compose up` |
+| Stop | `docker compose down` |
+| Rebuild after changes | `docker compose up --build` |
+| View logs | `docker compose logs -f backend` |
+
+---
+
+## Troubleshooting
+
+**Clean rebuild (fixes most issues)**
+
+```bash
+docker compose down
+docker compose build --no-cache
+docker compose up
+```
+
 ## For Project Screenshots 
 Go to this folders
 ```bash
