@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://erp-cbit.vercel.app/sitemap.xml
