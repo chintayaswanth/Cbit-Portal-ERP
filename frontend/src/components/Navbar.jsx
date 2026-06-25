@@ -55,7 +55,7 @@ function Navbar() {
               fontWeight: "bold",
             }}
           >
-            Cbit Portal
+            CBIT ERP Portal
           </Typography>
 
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
