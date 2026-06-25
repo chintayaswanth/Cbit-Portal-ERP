@@ -29,7 +29,7 @@ The platform analyzes attendance data to provide students with attendance manage
 
 ---
 
-## Manual Setup
+## Method - 1 Manual Setup
 
 ### Clone the Repository
 
