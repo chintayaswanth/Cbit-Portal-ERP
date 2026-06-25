@@ -1,7 +1,7 @@
 {
-  "name": "CBIT Portal",
+  "name": "CBIT Portal Attendance Tracker",
   "short_name": "CBIT Portal",
-  "description": "CBIT Portal for attendance tracking, safe bunk calculation, syllabus, papers, placements, clubs, and holidays.",
+  "description": "CBIT Portal attendance tracker for ERP attendance, safe bunk calculation, syllabus, papers, placements, clubs, and holidays.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",

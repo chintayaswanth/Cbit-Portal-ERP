@@ -287,6 +287,31 @@ export default function Attendance() {
   const timerRef = useRef(null);
   const API_URL = import.meta.env.VITE_API_URL;
 
+  useEffect(() => {
+    document.title = "CBIT Portal Attendance Tracker | Safe Bunk Calculator";
+
+    const setMeta = (selector, attr, value) => {
+      const tag = document.querySelector(selector);
+      if (tag) tag.setAttribute(attr, value);
+    };
+
+    setMeta(
+      'meta[name="description"]',
+      "content",
+      "CBIT Portal attendance tracker helps CBIT students check ERP attendance, calculate safe bunks, and plan classes needed for 75% attendance.",
+    );
+    setMeta(
+      'meta[property="og:title"]',
+      "content",
+      "CBIT Portal Attendance Tracker & Safe Bunk Calculator",
+    );
+    setMeta(
+      'meta[property="og:description"]',
+      "content",
+      "Check CBIT ERP attendance, calculate safe bunks, and plan classes for 75% with CBIT Portal.",
+    );
+  }, []);
+
   /* Elapsed-second timer — starts/stops with loading state */
   useEffect(() => {
     if (loading) {
@@ -372,8 +397,11 @@ export default function Attendance() {
       <div className="att-inner">
         {/* HEADER */}
         <div className="att-header">
-          <h1>Attendance Planner</h1>
-          <p>CBIT · Smart attendance tracking &amp; optimisation</p>
+          <h1>CBIT Portal Attendance Tracker</h1>
+          <p>
+            Check CBIT ERP attendance, calculate safe bunks, and plan classes
+            for 75%.
+          </p>
         </div>
 
         {/* FORM */}
