@@ -77,7 +77,7 @@ function Footer() {
           <div className="dev">
             <span className="dev-name">Chinta Yaswanth Varma</span>
             <a
-              href="https://www.linkedin.com/in/yaswanth-varma-chinta-a73100262/"
+              href="https://www.linkedin.com/in/chinta-yaswanth-varma-a73100262/"
               target="_blank"
               rel="noopener noreferrer"
               className="linkedin-btn"
