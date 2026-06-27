@@ -1,3 +1,6 @@
+/* ==========================
+   Papers
+========================== */
 .papers-container {
     padding: 40px;
     max-width: 1200px;
@@ -21,30 +24,32 @@
 }
 
 .paper-card {
+    all: unset;
     display: block;
-    text-decoration: none;
+    cursor: pointer;
     border-radius: 14px;
     overflow: hidden;
-    background: var(--card-bg);
-    color: var(--text-color);
+    background: var(--card-bg, white);
+        color: var(--text-color, #111);
     border: 2px solid #e5e7eb;
-    box-shadow: 0 6px 18px var(--card-shadow);
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+        transition: box-shadow 0.25s ease, border-color 0.25s ease;
+        width: 100%;
+        box-sizing: border-box;
 }
 
 .paper-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 10px 28px var(--card-shadow);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
     border-color: #2563eb;
-    /* blue highlight */
 }
 
 .paper-image {
     height: 160px;
-        background-size: contain;
-        /* prevents zoom */
-        background-repeat: no-repeat;
+    background-image: url('/books.png');
+    background-size: contain;
+    background-repeat: no-repeat;
         background-position: center;
+    background-color: #f0f4ff;
 }
 
 .paper-title {
@@ -52,16 +57,227 @@
     text-align: center;
     font-size: 20px;
     font-weight: 600;
-    color: var(--text-color);
-}
+    color: var(--text-color, #111);
+    }
+    
+    /* ==========================
+                                               Modal
+                                            ========================== */
+    
+    .papers-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.75);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 16px;
+    }
+    
+    .papers-modal-box {
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 28px 24px 22px;
+        max-width: 520px;
+        width: min(100%, 520px);
+        box-shadow: 0 30px 90px rgba(15, 23, 42, 0.22);
+        color: #111;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .papers-modal-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #ecfdf5;
+        border: 1px solid #bbf7d0;
+        color: #047857;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 6px 12px;
+        border-radius: 999px;
+        margin-bottom: 18px;
+        letter-spacing: 0.2px;
+    }
+    
+    .papers-modal-heading {
+        font-size: 24px;
+        font-weight: 800;
+        margin: 0 0 12px;
+        color: #111827;
+        line-height: 1.2;
+    }
+    
+    .papers-modal-body {
+        font-size: 15px;
+        color: #4b5563;
+        line-height: 1.75;
+        margin: 0 0 24px;
+    }
+    
+    .papers-modal-steps-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #6b7280;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin: 0 0 12px;
+    }
+    
+    .papers-modal-steps {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 26px;
+        display: grid;
+        gap: 14px;
+    }
+    
+    .papers-modal-steps li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 14px;
+        color: #374151;
+        line-height: 1.6;
+    }
+    
+    .papers-modal-steps li .step-num {
+        min-width: 26px;
+        height: 26px;
+        border-radius: 50%;
+        background: #2563eb;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1px;
+        flex-shrink: 0;
+    }
+    
+    .papers-modal-steps li code {
+        display: inline-block;
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
+        border-radius: 7px;
+        padding: 4px 8px;
+        font-size: 13px;
+        color: #1d4ed8;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        max-width: 100%;
+    }
+    
+    .papers-modal-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+    
+    .btn-cancel,
+    .btn-proceed {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px;
+        width: 100%;
+        border-radius: 14px;
+        box-sizing: border-box;
+        font-size: 15px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        padding: 0 18px;
+        line-height: 1;
+        font-family: inherit;
+        appearance: none;
+        -webkit-appearance: none;
+    }
+    
+    .btn-cancel {
+        border: 1px solid #d1d5db;
+        background: #ffffff;
+        color: #111827;
+    }
+    
+    .btn-cancel:hover {
+        background: #f9fafb;
+        transform: translateY(-1px);
+    }
+    
+    .btn-proceed {
+        border: 1px solid #16a34a;
+        background: #16a34a;
+        color: #ffffff;
+    }
+    
+    .btn-proceed:hover {
+        background: #15803d;
+        border-color: #15803d;
+        transform: translateY(-1px);
+    }
+    
+    @media (max-width: 520px) {
+        .papers-modal-box {
+            padding: 22px 18px 20px;
+            border-radius: 20px;
+            max-width: 100%;
+            min-width: 0;
+        }
+    
+        .papers-modal-badge {
+            font-size: 11px;
+            padding: 5px 10px;
+        }
+    
+        .papers-modal-heading {
+            font-size: 20px;
+            margin-bottom: 14px;
+        }
+    
+        .papers-modal-body {
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    
+        .papers-modal-steps {
+            gap: 12px;
+        }
+    
+        .papers-modal-steps li {
+            font-size: 13px;
+            gap: 10px;
+        }
+    
+        .papers-modal-actions {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+    
+        .btn-cancel,
+        .btn-proceed {
+            height: 46px;
+        }
+    
+        .papers-modal-box {
+            padding: 20px 16px 18px;
+        }
+    
+        .papers-modal-heading {
+            font-size: 19px;
+        }
 
-.papers-loading {
-    text-align: center;
-    font-size: 22px;
-    padding: 80px;
-    color: var(--text-color);
-}
+                .papers-modal-body {
+                    margin-bottom: 18px;
+                }
 
-body {
-    background: #f3f4f6;
-}
+                .papers-modal-steps {
+                    margin-bottom: 18px;
+                }
+                }
